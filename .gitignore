@@ -46,6 +46,9 @@ Web/.idea
 # ignoring editor files
 # [begin]
 
+# standard backup files
+*~
+
 # vim
 *.un
 
