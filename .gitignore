@@ -40,3 +40,17 @@ Web/.idea
 
 # # ignoring RoR files
 # [end]
+
+
+
+# ignoring editor files
+# [begin]
+
+# vim
+*.un
+
+# emacs
+.\#*\#
+
+# ignoring editor files
+# [end]
