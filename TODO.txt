@@ -1,0 +1,15 @@
+BUGS / HACKS:
+
+  WEB:
+    - assets/javascripts/application.js can't have "//= require_tree .", I removed to make it work but I don't really understand why... It seems to come from misunderstood coffee scripts.
+
+
+TODO:
+  
+  WEB:
+    - CV
+    - Portfolio
+    - Database
+    - Games
+    - Launcher
+    - Forum
