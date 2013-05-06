@@ -2,6 +2,8 @@ BUGS / HACKS:
 
   WEB:
     - assets/javascripts/application.js can't have "//= require_tree .", I removed to make it work but I don't really understand why... It seems to come from misunderstood coffee scripts.
+    - capybara 2.0 ambiguous password fixed with a hack (find method)
+
 
 
 TODO:
@@ -13,3 +15,7 @@ TODO:
     - Games
     - Launcher
     - Forum
+
+MAYBES:
+  - Jekyll library for static pages
+  - Turbulenz for html5 games (looks very promising)
