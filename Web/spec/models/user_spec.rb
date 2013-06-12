@@ -15,7 +15,8 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:admin) }
-  it { should respond_to(:authenticate)}
+  it { should respond_to(:authenticate) }
+  it { should respond_to(:posts) }
   it { should be_valid }
   it { should_not be_admin }
 
@@ -80,6 +81,29 @@ describe User do
 
       it { should_not == user_for_invalid_password }
       specify { user_for_invalid_password.should be_false }
+    end
+  end
+
+  describe "post association" do
+    before {@user.save}
+    let!(:older_post) do
+      FactoryGirl.create(:post, user:@user, created_at: 1.day.ago)
+    end
+    let!(:newer_post) do
+      FactoryGirl.create(:post, user:@user, created_at:1.hour.ago)
+    end
+
+    it "should have the right posts in the right order" do
+      @user.posts.should == [newer_post, older_post]
+    end
+
+    it "should destroy associated posts" do
+      posts = @user.posts.dup
+      @user.destroy
+      posts.should_not be_empty
+      posts.each do |post|
+        Post.find_by_id(post.id).should be_nil
+      end
     end
   end
 end

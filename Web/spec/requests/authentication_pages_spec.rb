@@ -42,6 +42,18 @@ describe "Authentication" do
       describe "for non-signed-in users" do
         let(:user) { FactoryGirl.create(:user) }
         
+        describe "in the Posts controller" do
+          describe "submitting to the create action" do
+            before { post posts_path }
+            specify { response.should redirect_to(signin_path) }
+          end
+
+          describe "submitting to the destroy action" do
+            before { delete post_path(FactoryGirl.create(:post)) }
+            specify { response.should redirect_to(signin_path) }
+          end
+        end
+
         describe "in the Users controller" do
           
           describe "visiting the edit page" do
@@ -56,7 +68,6 @@ describe "Authentication" do
               it { should have_selector('h1', text:'Update your profile') }
             end
           end
-
           describe "submitting to the update action" do
             before { put user_path(user) }
             specify {response.should redirect_to(signin_path) }
@@ -81,6 +92,7 @@ describe "Authentication" do
           end
 
           describe "as non-admin user" do
+            let(:user) { FactoryGirl.create(:user) }
             let(:non_admin) { FactoryGirl.create(:user) }
 
             before { sign_in non_admin }

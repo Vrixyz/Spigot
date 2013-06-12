@@ -10,10 +10,7 @@ Ptts::Application.routes.draw do
   match '/contact', to: 'static_pages#contact'
   match '/home', to: 'static_pages#home'
 
-  resources :posts do
-    resources :comments
-  end
-  
+  resources :posts  
   resources :users
   
   resources :sessions, only: [:new, :create, :destroy]
