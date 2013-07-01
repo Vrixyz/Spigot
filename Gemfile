@@ -6,14 +6,13 @@ gem 'bootstrap-sass'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
 gem 'bcrypt-ruby'
 gem 'faker'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 
 group :development do
+  gem 'sqlite3'
   gem 'annotate'
   gem 'rspec-rails'
 end
