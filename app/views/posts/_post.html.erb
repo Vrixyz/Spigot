@@ -1,0 +1,30 @@
+<li>
+  <% if post == @post and (current_user?(post.user) or (current_user!= nil and current_user.admin?)) %>
+    <div id="title-focus">
+      <h2>Editing post</h2>
+      <%= render 'shared/post_form' %>
+      <script type="text/javascript">
+        // <!--
+        // $("body").scrollTop($("#title-focus").position().top;
+        document.location.hash="#title-focus";
+        // -->
+      </script>
+    </div>
+  <% else %>
+    <h2><%= post.title %></h2>
+    <span class="content"> <%= post.content %></span>
+    <span class="timestamp">
+      Posted <%= time_ago_in_words(post.created_at) %> ago.
+    </span>
+  <% end %>
+  <% if current_user?(post.user) or (current_user != nil and current_user.admin?) %>
+    <% if post == @post %>
+      <%= link_to "Stop edition", posts_path(page:@page) %>
+    <% else %>
+      <%= link_to "Edit", edit_post_path(post) %>
+    <% end %>
+    <%= link_to "delete", post, method: :delete,
+                                     data: { confirm: "You sure?" },
+                                     title: post.title %>
+  <% end %>  
+</li>

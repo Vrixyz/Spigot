@@ -2,41 +2,41 @@
 # ignoring RoR files
 
 # github ignores
-/Web/*.rbc
-/Web/*.sassc
-/Web/.sass-cache
-/Web/capybara-*.html
-/Web/.rspec
-/Web/.bundle
+/*.rbc
+/*.sassc
+/.sass-cache
+/capybara-*.html
+/.rspec
+/.bundle
 # /Web/vendor/bundle # already defined
 # /Web/log/*
 # /Web/tmp/*
 # /Web/db/*.sqlite3
-/Web/public/system/*
-/Web/coverage/
-/Web/spec/tmp/*
-/Web/**.orig
-/Web/rerun.txt
-/Web/pickle-email-*.html
+/public/system/*
+/coverage/
+/spec/tmp/*
+/**.orig
+/rerun.txt
+/pickle-email-*.html
 
 
 # Ignore bundler config
-/Web/.bundle
+/.bundle
 
 # Ignore the default SQLite database.
-/Web/db/*.sqlite3
+/db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/Web/log/*.log
-/Web/tmp
+/log/*.log
+/tmp
 
 # Ignore other unneeded files.
-Web/doc/
-Web/*.swp
-Web/*~
-Web/.project
-Web/.DS_Store
-Web/.idea
+doc/
+*.swp
+*~
+.project
+.DS_Store
+.idea
 
 # # ignoring RoR files
 # [end]

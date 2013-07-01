@@ -1,0 +1,19 @@
+<% provide(:title, "Posts") %>
+<div class="row">
+
+  <% if signed_in? and @post.new_record?%>
+    <section>
+      <h2>Create new post</h2>
+      <%= render 'shared/post_form' %>
+    </section>
+  <% end %>
+  <% if @posts && @posts.any? %>
+    <h3>Posts (<%= @posts.count %>)</h3>
+    <ol id="posts_list" class="posts">
+      <%= render @posts %>
+    </ol>
+    <% if @post == nil or @post.new_record? %>
+      <%= will_paginate @posts %>
+    <% end %>
+  <% end %>
+</div>
