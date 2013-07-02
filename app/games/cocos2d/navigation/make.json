@@ -1,0 +1,6 @@
+{
+    "output": "navigation.js",
+    "paths": {
+        "src" : "/"
+    }
+}
