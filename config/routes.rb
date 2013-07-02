@@ -10,6 +10,9 @@ Ptts::Application.routes.draw do
   match '/contact', to: 'static_pages#contact'
   match '/home', to: 'static_pages#home'
 
+  match '/games/survivor', to: 'games#survivor'
+  match '/games/navigation', to: 'games#navigation'
+
 
   resources :posts  
   resources :users

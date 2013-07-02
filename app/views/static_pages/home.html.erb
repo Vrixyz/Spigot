@@ -11,4 +11,14 @@
   <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
 </div>
 
-<%= link_to "My Blog", posts_path %>
+<div>
+  <%= link_to "My Blog", posts_path %>
+</div>
+
+<canvas id="canvas_navigation" width="300" height="225"> </canvas>
+
+<script type="text/javascript">
+  var b_canvas = document.getElementById("canvas_navigation");
+  var b_context = b_canvas.getContext("2d");
+  b_context.fillRect(0, 0, 300, 225);
+</script>
