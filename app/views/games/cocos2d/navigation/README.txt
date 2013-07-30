@@ -1,1 +1,1 @@
-This uses cocos2d js
+This uses cocos2d js v0.1

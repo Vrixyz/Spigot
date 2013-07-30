@@ -4,6 +4,7 @@ var util = require('util');
 
 var Ball = cocos.nodes.Node.extend({
     velocity: null,
+    collisionNodes: null,
     init: function() {
         Ball.superclass.init.call(this);
         var sprite = cocos.nodes.Sprite.create({
@@ -26,12 +27,40 @@ var Ball = cocos.nodes.Node.extend({
         this.set('position', pos);
         this.testBatCollision();
         this.testEdgeCollision();
+        this.testCollisionNodes();
+    },
+    testCollisionNodes: function() {
+        var bricks = this.get('parent').get('bricks');
+        for (var i = 0; i < bricks.length; i++)
+        {
+            var brick = bricks[i];
+            if (brick)
+            {
+                var brickBox = brick.get('boundingBox');
+                var ballBox = this.get('boundingBox');
+                if (geom.rectOverlapsRect(brickBox, ballBox)) {
+                    var intersection = geom.rectIntersection(brickBox, ballBox);
+                    if (intersection.origin.x != NaN) {
+                        var vel = util.copy(this.get('velocity'));
+                        if (intersection.size.width > intersection.size.height) {
+                            vel.y *= -1;
+                        }
+                        else {
+                            vel.x *= -1;
+                        }
+                        this.set('velocity', vel);
+                        brick.ballCollision();
+                    }
+                }
+            }
+        }
+
     },
     testEdgeCollision: function() {
         var vel = util.copy(this.get('velocity')),
-        ballBox = this.get('boundingBox'),
-        // Get size of canvas
-        winSize = cocos.Director.get('sharedDirector').get('winSize');
+            ballBox = this.get('boundingBox'),
+            // Get size of canvas
+            winSize = cocos.Director.get('sharedDirector').get('winSize');
         
         // Moving left and hit left edge
         if (vel.x < 0 && geom.rectGetMinX(ballBox) < 0) {

@@ -7,13 +7,15 @@ var cocos = require('cocos2d'),
 //   Import my Bat module
 var Bat = require('Bat').Bat,
 //  Import my Ball module
-    Ball = require('Ball').Ball;
+    Ball = require('Ball').Ball,
+    Brick = require('Brick').Brick;
 
 
 // Create a new layer
 var Navigation = cocos.nodes.Layer.extend({
     bat: null,
     ball: null,
+    brick: null,
     init: function() {
         // You must always call the super class version of init
         Navigation.superclass.init.call(this);
@@ -30,15 +32,26 @@ var Navigation = cocos.nodes.Layer.extend({
         // Add the bat: 
         var bat = Bat.create();
         bat.set('position', new geo.Point(160, 280));
-        this.addChild({child:bat});
         this.set('bat', bat);
         
         // Add the ball
         var ball = Ball.create();
         ball.set('position', new geo.Point(160, 250));
-        this.addChild({child: ball});
         this.set('ball', ball);
-        
+
+        // Add Bricks
+        var bricks = [];
+        for (var i = 0; i < 3; i++)
+        {
+            var brick = Brick.create();
+            brick.set('position', new geo.Point((i + 1) * 64, 100));
+            bricks.push(brick);
+            this.addChild({child: brick});
+        }
+        this.set('bricks', bricks);
+
+        this.addChild({child:bat});
+        this.addChild({child: ball});
         this.set('isMouseEnabled', true);
     },
     mouseMoved: function(evt) {

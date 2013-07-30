@@ -20592,6 +20592,7 @@ var util = require('util');
 
 var Ball = cocos.nodes.Node.extend({
     velocity: null,
+    collisionNodes: null,
     init: function() {
         Ball.superclass.init.call(this);
         var sprite = cocos.nodes.Sprite.create({
@@ -20614,12 +20615,40 @@ var Ball = cocos.nodes.Node.extend({
         this.set('position', pos);
         this.testBatCollision();
         this.testEdgeCollision();
+        this.testCollisionNodes();
+    },
+    testCollisionNodes: function() {
+        var bricks = this.get('parent').get('bricks');
+        for (var i = 0; i < bricks.length; i++)
+        {
+            var brick = bricks[i];
+            if (brick)
+            {
+                var brickBox = brick.get('boundingBox');
+                var ballBox = this.get('boundingBox');
+                if (geom.rectOverlapsRect(brickBox, ballBox)) {
+                    var intersection = geom.rectIntersection(brickBox, ballBox);
+                    if (intersection.origin.x != NaN) {
+                        var vel = util.copy(this.get('velocity'));
+                        if (intersection.size.width > intersection.size.height) {
+                            vel.y *= -1;
+                        }
+                        else {
+                            vel.x *= -1;
+                        }
+                        this.set('velocity', vel);
+                        brick.ballCollision();
+                    }
+                }
+            }
+        }
+
     },
     testEdgeCollision: function() {
         var vel = util.copy(this.get('velocity')),
-        ballBox = this.get('boundingBox'),
-        // Get size of canvas
-        winSize = cocos.Director.get('sharedDirector').get('winSize');
+            ballBox = this.get('boundingBox'),
+            // Get size of canvas
+            winSize = cocos.Director.get('sharedDirector').get('winSize');
         
         // Moving left and hit left edge
         if (vel.x < 0 && geom.rectGetMinX(ballBox) < 0) {
@@ -20683,6 +20712,33 @@ var Bat = cocos.nodes.Node.extend({
 
 exports.Bat = Bat;
 }};
+__resources__["/Brick.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
+var cocos = require('cocos2d');
+var geom = require('geometry');
+
+var Brick = cocos.nodes.Node.extend({
+    init: function() {
+        Brick.superclass.init.call(this);
+        var sprite = cocos.nodes.Sprite.create({
+            file: '/resources/sprites.png',
+            rect: new geom.Rect(0, 32, 32, 16)
+        });
+        sprite.set('anchorPoint', new geom.Point(0, 0));
+        this.addChild({child: sprite});
+        this.set('contentSize', sprite.get('contentSize'));
+    },
+    ballCollision: function() {
+        var bricks = this.get('parent').get('bricks');
+        bricks[bricks.indexOf(this)] = null;
+        
+        this.get('parent').detatchChild({child: this, cleanup: true});
+        delete this;
+
+    }
+});
+
+exports.Brick = Brick;
+}};
 __resources__["/main.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
 // Import the cocos2d module
 var cocos = require('cocos2d'),
@@ -20693,13 +20749,15 @@ var cocos = require('cocos2d'),
 //   Import my Bat module
 var Bat = require('Bat').Bat,
 //  Import my Ball module
-    Ball = require('Ball').Ball;
+    Ball = require('Ball').Ball,
+    Brick = require('Brick').Brick;
 
 
 // Create a new layer
 var Navigation = cocos.nodes.Layer.extend({
     bat: null,
     ball: null,
+    brick: null,
     init: function() {
         // You must always call the super class version of init
         Navigation.superclass.init.call(this);
@@ -20716,15 +20774,26 @@ var Navigation = cocos.nodes.Layer.extend({
         // Add the bat: 
         var bat = Bat.create();
         bat.set('position', new geo.Point(160, 280));
-        this.addChild({child:bat});
         this.set('bat', bat);
         
         // Add the ball
         var ball = Ball.create();
         ball.set('position', new geo.Point(160, 250));
-        this.addChild({child: ball});
         this.set('ball', ball);
-        
+
+        // Add Bricks
+        var bricks = [];
+        for (var i = 0; i < 3; i++)
+        {
+            var brick = Brick.create();
+            brick.set('position', new geo.Point((i + 1) * 64, 100));
+            bricks.push(brick);
+            this.addChild({child: brick});
+        }
+        this.set('bricks', bricks);
+
+        this.addChild({child:bat});
+        this.addChild({child: ball});
         this.set('isMouseEnabled', true);
     },
     mouseMoved: function(evt) {
