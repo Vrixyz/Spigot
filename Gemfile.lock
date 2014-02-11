@@ -30,7 +30,7 @@ GEM
       rake (>= 0.8.7)
     arel (4.0.2)
     atomic (1.1.14)
-    bcrypt-ruby (3.0.1-x86-mingw32)
+    bcrypt-ruby (3.1.2-x86-mingw32)
     bootstrap-sass (3.1.0.2)
       sass (~> 3.2)
     bootstrap-will_paginate (0.0.10)
@@ -52,10 +52,10 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
-    factory_girl (4.3.0)
+    factory_girl (4.4.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.3.0)
-      factory_girl (~> 4.3.0)
+    factory_girl_rails (4.4.0)
+      factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     faker (1.2.0)
       i18n (~> 0.5)
@@ -143,7 +143,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
-  bcrypt-ruby (~> 3.0.0)
+  bcrypt-ruby (~> 3.1.2)
   bootstrap-sass
   bootstrap-will_paginate
   capybara
