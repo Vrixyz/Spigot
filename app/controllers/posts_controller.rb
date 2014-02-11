@@ -7,8 +7,13 @@ class PostsController < ApplicationController
   end
 
   def index
-    @posts = Post.paginate(page: params[:page])
-    @post = current_user.posts.build if signed_in?
+	@public = params[:public]
+	if (params[:public] == 'true')
+      @posts = Post.paginate(page: params[:page])
+	else
+	  @posts = Post.joins(:user).where('users.admin' => true).paginate(page: params[:page])
+    end
+	@post = current_user.posts.build if signed_in?
   end
 
   def create
@@ -16,7 +21,7 @@ class PostsController < ApplicationController
     if @post.save
       flash[:success] = "Post created !"
       @posts = Post.paginate(page: params[:page])
-      redirect_to posts_path
+      redirect_to posts_path(page: @page, public: params[:public])
     else
       # flash[:error] = "Couldn't create post."
       render "posts/index"
@@ -26,8 +31,8 @@ class PostsController < ApplicationController
   def edit
     @post = Post.find(params[:id])
     @page = @post.position("id", "DESC") / Post.per_page + 1
-    @posts = Post.paginate(page:@page)
-    render 'posts/index', page: @page
+	@posts = Post.paginate(page:@page)
+	render 'posts/index', page: @page
     # render action: "index"
   end
  
@@ -45,7 +50,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     flash[:success] = "Successfully destroyed post."
-    redirect_to posts_path
+    redirect_to posts_path(page: @page)
   end
 
   private
@@ -53,8 +58,9 @@ class PostsController < ApplicationController
       @post = Post.find(params[:id]) if current_user.admin?
       @post ||= current_user.posts.find_by_id(params[:id])
     
-      redirect_to posts_path if @post.nil? 
+      redirect_to posts_path(page: @page) if @post.nil? 
     rescue
-      redirect_to posts_path
+      redirect_to posts_path(page: @page)
     end
+
 end
