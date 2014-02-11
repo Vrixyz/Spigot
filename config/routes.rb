@@ -1,17 +1,17 @@
 Ptts::Application.routes.draw do
   root :to => 'static_pages#home'
   # commented because included in the resources :user
-  match '/signup',  to: 'users#new'
-  match '/signin',  to: 'sessions#new'
+  get '/signup',  to: 'users#new', via: :all
+  post '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
   
-  match '/help', to: 'static_pages#help'
-  match '/about', to: 'static_pages#about'
-  match '/contact', to: 'static_pages#contact'
-  match '/home', to: 'static_pages#home'
+  get '/help', to: 'static_pages#help'
+  get '/about', to: 'static_pages#about'
+  get '/contact', to: 'static_pages#contact'
+  get '/home', to: 'static_pages#home'
 
-  match '/games/survivor', to: 'games#survivor'
-  match '/games/navigation', to: 'games#navigation'
+  get '/games/survivor', to: 'games#survivor'
+  get '/games/navigation', to: 'games#navigation'
 
 
   resources :posts  
